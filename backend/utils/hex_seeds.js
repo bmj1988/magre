@@ -1,4 +1,4 @@
-const hex_seeds = [{
+export default hex_seeds = [{
     name: '乾 QIAN',
     composition: '111111',
     aspect: 'CREATIVE POWER',

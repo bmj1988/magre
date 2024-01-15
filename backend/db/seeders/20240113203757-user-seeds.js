@@ -11,12 +11,12 @@ if (process.env.NODE_ENV === 'production') {
 
 const users = [
   {
-    name: 'Owen Owner',
-    email: 'demoOwner@demo.net',
+    name: 'Reed Reader',
+    email: 'demoReeder@demo.net',
     hashedPw: bcrypt.hashSync('password')
   },
   {
-    name: 'Mike Manager',
+    name: 'Quency Quizling',
     email: 'demoManager@demo.net',
     hashedPw: bcrypt.hashSync('password2')
   },
