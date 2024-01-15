@@ -1,0 +1,17 @@
+require('dotenv').config();
+const { port } = require('../config')
+
+const app = require('../app');
+const db = require('../db/models');
+
+db.sequelize
+  .authenticate()
+  .then(() => {
+    console.log('DB CONNECTION INITALIZED')
+
+    app.listen(port, () => console.log('P O R T 8 8 8 8'));
+  })
+  .catch((err) => {
+    console.log('DB CONNECTION FAILURE');
+    console.error(err);
+  })
