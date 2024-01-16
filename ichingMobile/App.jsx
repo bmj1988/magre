@@ -1,4 +1,4 @@
-import RootNavigation from './src/assets/navigation';
+import RootNavigation from './src/navigation';
 
 export default function App() {
   return (

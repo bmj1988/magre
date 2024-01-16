@@ -7,9 +7,9 @@ const Home = ({ navigation }) => {
     }
     return (
         <SafeAreaView style={ styles.theme }>
-            <Text style={{ color: "white" }}>Hello world</Text>
-            <TouchableOpacity onPress={navigateToPost}>
-                <Text>GO AWAY</Text>
+            <Text style={styles.text}>Bellow world</Text>
+            <TouchableOpacity onPress={() => navigateToPost()}>
+                <Text style={{ color: "white", fontSize: 40 }}>GO AWAY</Text>
             </TouchableOpacity>
         </SafeAreaView>
     )
@@ -18,7 +18,13 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
     theme: {
         backgroundColor: 'rgb(10,10,10)',
-        flex: 1
+        flex: 1,
+        fontSize: '30px',
+    },
+    text: {
+        color: 'pink',
+        fontSize: 25,
+        fontWeight: '500'
     }
 })
 
