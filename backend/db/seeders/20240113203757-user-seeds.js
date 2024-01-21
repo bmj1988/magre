@@ -1,5 +1,6 @@
 'use strict';
 const { User } = require('../models')
+const { Op } = require('sequelize')
 /// on refactor, look at importing just the hashSync command
 const bcrypt = require('bcryptjs')
 
@@ -28,7 +29,7 @@ const users = [
 ]
 
 const getEmails = (arr) => {
-  newArr = []
+  const newArr = []
   for (let x of arr) {
     newArr.push(x.email)
   }
@@ -42,6 +43,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
+    options.tableName = 'Users';
     await queryInterface.bulkDelete(options, {
       email: { [Op.in]: getEmails(users) }
     }, {})

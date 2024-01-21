@@ -1,4 +1,4 @@
-export default hex_seeds = [{
+const hex_seeds = [{
     name: '乾 QIAN',
     composition: '111111',
     aspect: 'CREATIVE POWER',
@@ -511,3 +511,4 @@ export default hex_seeds = [{
     art: ""            // Initialized as a blank string
 },
 ]
+module.exports = hex_seeds

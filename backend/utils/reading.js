@@ -77,4 +77,4 @@ const hexagramGenerator = () => {
 //     return randIntExcluse(64).toString(2)
 // }
 
-console.log(hexMethod())
+module.exports = hexagramGenerator;

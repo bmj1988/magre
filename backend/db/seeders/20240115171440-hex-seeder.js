@@ -1,5 +1,5 @@
 'use strict';
-import hex_seeds from "../../utils/hex_seeds";
+const hex_seeds =  require("../../utils/hex_seeds");
 const { Hexagram } = require('../models')
 let options = {};
 if (process.env.NODE_ENV === 'production') {
