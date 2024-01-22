@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, IndexHints
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Hexagram extends Model {
@@ -20,9 +20,19 @@ module.exports = (sequelize, DataTypes) => {
     guidance: DataTypes.TEXT,
     wisdom: DataTypes.TEXT,
     art: DataTypes.STRING
-  }, {
+  },
+  {
     sequelize,
     modelName: 'Hexagram',
+    indexes: [
+      {
+        unique: true,
+        fields:['composition']
+      }
+    ],
+    defaultScope: {
+      attributes: ['name', 'composition', 'aspect', 'guidance', 'wisdom', 'art']
+    }
   });
   return Hexagram;
 };

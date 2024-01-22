@@ -1,5 +1,7 @@
 import React from "react";
-import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
+import styles from "../../stylesheet/styles";
+
 
 const Home = ({ navigation }) => {
     const navigateToPost = () => {
@@ -9,23 +11,11 @@ const Home = ({ navigation }) => {
         <SafeAreaView style={ styles.theme }>
             <Text style={styles.text}>Bellow world</Text>
             <TouchableOpacity onPress={() => navigateToPost()}>
-                <Text style={{ color: "white", fontSize: 40 }}>GO AWAY</Text>
+                <Text style={styles.text}>GO AWAY</Text>
             </TouchableOpacity>
         </SafeAreaView>
     )
 }
 
-const styles = StyleSheet.create({
-    theme: {
-        backgroundColor: 'rgb(10,10,10)',
-        flex: 1,
-        fontSize: '30px',
-    },
-    text: {
-        color: 'pink',
-        fontSize: 25,
-        fontWeight: '500'
-    }
-})
 
 export default Home

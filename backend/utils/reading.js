@@ -1,3 +1,7 @@
+const { Op } = require('sequelize')
+const { Hexagram } = require('../db/models')
+const { Trigram } = require('../db/models/')
+
 const lineValues = {
     '0': ['solid', true],
     '1': ['broken'],
@@ -46,8 +50,8 @@ const hexagramGenerator = () => {
     const tri1 = trigramGenerator();
     const tri2 = trigramGenerator();
     const hex = tri1.concat(tri2)
-    const hexCode = []
-    const alt = []
+    let hexCode = []
+    let alt = []
     let sendAlt = false
 
     for (let i = 0; i < 6; i++) {
@@ -70,11 +74,51 @@ const hexagramGenerator = () => {
         }
     }
 
-    return [hexCode, alt,  sendAlt]
+    hexCode = hexCode.join('')
+    alt = alt.join('')
+
+
+
+    return [hexCode, alt, sendAlt]
 }
 
+const findHex = async (req, res, next) => {
+    const [hexCode, alt, sendAlt] = hexagramGenerator();
+    console.log(`RESULTS OF DESTRUCTURED HEX GENERATOR`, hexCode, alt, sendAlt)
+
+    req.reading1 = await Hexagram.findOne({
+        where: {
+            composition: hexCode
+        }
+    })
+
+    req.reading1["trigrams"] = await Trigram.findAll({
+        where: {
+            [Op.or]:
+                [{ composition: hexCode.slice(3) },
+                { composition: hexCode.slice(-3) }]
+        }
+    })
+
+    if (sendAlt) {
+        req.alt = await Hexagram.findOne({
+            where: { composition: alt }
+        })
+        req.altReadingTrigram = await Trigram.findAll({
+            where: {
+                [Op.or]:
+                    [{ composition: alt.slice(3) },
+                    { composition: alt.slice(-3) }]
+            }
+        })
+    }
+    next();
+}
 // const hexMethod = () => {
 //     return randIntExcluse(64).toString(2)
 // }
 
-module.exports = hexagramGenerator;
+module.exports = {
+    hexagramGenerator,
+    findHex
+};
