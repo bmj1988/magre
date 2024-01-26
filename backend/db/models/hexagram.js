@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Hexagram.belongsTo(models.Trigram, {foreignKey: 'lower', as: 'lower'})
-      Hexagram.belongsTo(models.Trigram, {foreignKey: 'upper', as: 'upper'})
+      Hexagram.belongsTo(models.Trigram, { foreignKey: 'lower', as: 'lower' })
+      Hexagram.belongsTo(models.Trigram, { foreignKey: 'upper', as: 'upper' })
     }
   }
   Hexagram.init({
@@ -33,18 +33,31 @@ module.exports = (sequelize, DataTypes) => {
 
 
   },
-  {
-    sequelize,
-    modelName: 'Hexagram',
-    indexes: [
-      {
-        unique: true,
-        fields:['composition']
+    {
+      sequelize,
+      modelName: 'Hexagram',
+      indexes: [
+        {
+          unique: true,
+          fields: ['composition']
+        },
+        {
+          unique: true,
+          fields: ['lower', 'upper']
+        }
+      ],
+      defaultScope: {
+        attributes: ['name', 'composition', 'aspect', 'guidance', 'wisdom', 'art'],
+        include: [{
+          model: Trigram,
+          as: 'lower'
+        },
+        {
+          model: Trigram,
+          as: 'upper'
+        }
+        ]
       }
-    ],
-    defaultScope: {
-      attributes: ['name', 'composition', 'aspect', 'guidance', 'wisdom', 'art']
-    }
-  });
+    });
   return Hexagram;
 };
