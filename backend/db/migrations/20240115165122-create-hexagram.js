@@ -27,6 +27,41 @@ module.exports = {
       art: {
         type: Sequelize.STRING
       },
+      upper: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      lower: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      first: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      second: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      third: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      fourth: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      fifth: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      sixth: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      all: {
+        type: Sequelize.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

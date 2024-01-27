@@ -1,6 +1,5 @@
 const { Op } = require('sequelize')
-const { Hexagram } = require('../db/models')
-const { Trigram } = require('../db/models/')
+const { Hexagram, Trigram } = require('../db/models')
 
 const lineValues = {
     '0': ['solid', true],
@@ -46,6 +45,24 @@ const trigramGenerator = () => {
     return trigram
 }
 
+const changingLinesProcessor = (val) => {
+        switch (val) {
+            case 0:
+                return 'first'
+            case 1:
+                return 'second'
+            case 2:
+                return 'third'
+            case 3:
+                return 'fourth'
+            case 4:
+                return 'fifth'
+            case 5:
+                return 'sixth'
+            default: return
+        }
+    }
+
 const hexagramGenerator = () => {
     const tri1 = trigramGenerator();
     const tri2 = trigramGenerator();
@@ -53,19 +70,23 @@ const hexagramGenerator = () => {
     let hexCode = []
     let alt = []
     let sendAlt = false
+    let changingLines = []
 
     for (let i = 0; i < 6; i++) {
-        const linecell = hex[i]
-        const line = hex[i][0]
+        const linecell = hex[i] /// THIS ARRAY REPRESENTS [LINE, BOOLEAN INDICATING CHANGE]
+        const line = linecell[0] /// THIS IS THE LINE
         line === 'solid' ? hexCode.push('1') : hexCode.push('0')
-        if (linecell[1]) {
-            if (!sendAlt) sendAlt = !sendAlt
+        if (linecell[1]) { // IF THERE IS A CHANGING LINE
+            changingLines.push(changingLinesProcessor(i))
+            if (!sendAlt) sendAlt = !sendAlt /// IF SENDALT FLAG FALSE, FLIP TO TRUE
             switch (hexCode[i]) {
                 case '0': {
                     alt.push('1')
+                    break
                 }
                 case '1': {
                     alt.push('0')
+                    break
                 }
             }
         }
@@ -73,44 +94,54 @@ const hexagramGenerator = () => {
             alt.push(hexCode[i])
         }
     }
-
+    console.log(`CHANGING LINES`, changingLines)
     hexCode = hexCode.join('')
     alt = alt.join('')
 
 
 
-    return [hexCode, alt, sendAlt]
+    return [hexCode, alt, sendAlt, changingLines]
 }
 
 const findHex = async (req, res, next) => {
-    const [hexCode, alt, sendAlt] = hexagramGenerator();
-    console.log(`RESULTS OF DESTRUCTURED HEX GENERATOR`, hexCode, alt, sendAlt)
-
+    const [hexCode, alt, sendAlt, changingLines] = hexagramGenerator();
+    console.log(`RESULTS CHANGING LINES`, changingLines, 'SEND ALT', sendAlt, alt)
     req.reading1 = await Hexagram.findOne({
+        attributes: [...changingLines],
         where: {
             composition: hexCode
-        }
-    })
-
-    req.reading1["trigrams"] = await Trigram.findAll({
-        where: {
-            [Op.or]:
-                [{ composition: hexCode.slice(3) },
-                { composition: hexCode.slice(-3) }]
-        }
+        },
+        include: [
+            {
+                model: Trigram,
+                as: 'upperTrigram',
+                attributes: ['element', 'phase', 'composition']
+            },
+            {
+                model: Trigram,
+                as: 'lowerTrigram',
+                attributes: ['element', 'phase', 'composition']
+            },
+        ]
     })
 
     if (sendAlt) {
         req.alt = await Hexagram.findOne({
-            where: { composition: alt }
+            where: { composition: alt },
+            include: [
+                {
+                    model: Trigram,
+                    as: 'upperTrigram',
+                    attributes: ['element', 'phase', 'composition']
+                },
+                {
+                    model: Trigram,
+                    as: 'lowerTrigram',
+                    attributes: ['element', 'phase', 'composition']
+                },
+            ]
         })
-        req.altReadingTrigram = await Trigram.findAll({
-            where: {
-                [Op.or]:
-                    [{ composition: alt.slice(3) },
-                    { composition: alt.slice(-3) }]
-            }
-        })
+
     }
     next();
 }

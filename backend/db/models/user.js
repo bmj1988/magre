@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      User.belongsTo(models.Stem, {foreignKey: 'stemId'})
+      User.belongsTo(models.Branch, {foreignKey: 'branchId'})
     }
   }
   User.init({
@@ -44,6 +45,14 @@ module.exports = (sequelize, DataTypes) => {
         len: {args: [60,60], msg: 'Password hashing producing invalid character length'}
       }
     },
+    stemId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    branchId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'User',

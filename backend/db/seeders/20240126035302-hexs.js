@@ -1,5 +1,5 @@
 'use strict';
-const hex_seeds =  require("../../utils/hex_seeds");
+const hex_seeds = require("../../utils/hex_seeds");
 const { Hexagram } = require('../models')
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -7,13 +7,19 @@ if (process.env.NODE_ENV === 'production') {
 }
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await Hexagram.bulkCreate(hex_seeds, {
       validate: true
     })
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
+    /**
+     * Add commands to revert seed here.
+     *
+     * Example:
+     * await queryInterface.bulkDelete('People', null, {});
+     */
     await queryInterface.dropTable('Hexagrams', {})
   }
 };

@@ -2,6 +2,7 @@ const router = require('express').Router()
 const bcrypt = require('bcryptjs')
 const { setTokenCookie, requireAuth, validateLogin } = require('../../../utils/auth')
 const { User } = require('../../../db/models')
+const { chineseZodiacGenerator }
 
 /// USER ROUTER
 router.post(
@@ -9,7 +10,8 @@ router.post(
     async (req, res) => {
         const { email, password, name } = req.body;
         const hashedPw = bcrypt.hashSync(password);
-        const user = await User.create({ email, name, hashedPw });
+        const [branchId, stemId] = chineseZodiacGenerator(new Date(`${req.birthdate}`))
+        const user = await User.create({ email, name, hashedPw, branchId, stemId });
 
         const safeUser = {
             id: user.id,

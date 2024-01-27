@@ -3,25 +3,26 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Trigram extends Model {
+  class Stem extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Trigram.hasMany(models.Hexagram, {foreignKey: 'lower', as: 'lowerTrigram'})
-      Trigram.hasMany(models.Hexagram, {foreignKey: 'upper', as: 'upperTrigram'})
+      Stem.hasMany(models.User, {foreignKey: 'stemId'})
     }
   }
-  Trigram.init({
+  Stem.init({
     name: DataTypes.STRING,
     element: DataTypes.STRING,
-    phase: DataTypes.STRING,
-    composition: DataTypes.STRING
+    indication: DataTypes.TEXT,
+    alignment: DataTypes.STRING,
+    symbolism: DataTypes.TEXT,
+    art: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Trigram',
+    modelName: 'Stem',
   });
-  return Trigram;
+  return Stem;
 };
