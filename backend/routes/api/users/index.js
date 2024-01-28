@@ -2,7 +2,7 @@ const router = require('express').Router()
 const bcrypt = require('bcryptjs')
 const { setTokenCookie, requireAuth, validateLogin } = require('../../../utils/auth')
 const { User } = require('../../../db/models')
-const { chineseZodiacGenerator }
+const { chineseZodiacGenerator } = require('../../../utils/zodiac')
 
 /// USER ROUTER
 router.post(
