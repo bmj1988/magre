@@ -21,13 +21,21 @@ module.exports = {
         type: Sequelize.STRING.BINARY,
         allowNull: false,
       },
-      stem: {
+      stemId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'Stems',
+          key: 'id'
+        }
       },
-      branch: {
+      branchId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'Branches',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,

@@ -46,7 +46,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await User.bulkCreate(userSeeds, { validate: true })
+    await User.bulkCreate(userSeeds)
   },
 
   async down(queryInterface, Sequelize) {

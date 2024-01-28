@@ -1,5 +1,5 @@
 'use strict';
-const { zodiacBranchSeeds } = require('../../utils/branch_seeds')
+const zodiacBranchSeeds = require('../../utils/branch_seeds')
 const { Branch } = require('../models')
 let options = {};
 if (process.env.NODE_ENV === 'production') {

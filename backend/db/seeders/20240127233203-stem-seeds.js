@@ -1,5 +1,5 @@
 'use strict';
-const { zodiacStemSeeds } = require('../../utils/stem_seeds')
+const zodiacStemSeeds = require('../../utils/stem_seeds')
 const { Stem } = require('../models')
 let options = {};
 if (process.env.NODE_ENV === 'production') {

@@ -15,6 +15,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.static('assets'))
 
 if (!isProduction) {
     app.use(cors())
