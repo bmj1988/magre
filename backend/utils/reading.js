@@ -106,7 +106,7 @@ const hexagramGenerator = () => {
 const findHex = async (req, res, next) => {
     const [hexCode, alt, sendAlt, changingLines] = hexagramGenerator();
     console.log(`RESULTS CHANGING LINES`, changingLines, 'SEND ALT', sendAlt, alt)
-    req.reading1 = await Hexagram.findOne({
+    req.reading = await Hexagram.findOne({
         attributes: [...changingLines],
         where: {
             composition: hexCode

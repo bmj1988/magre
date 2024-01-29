@@ -1,5 +1,5 @@
 import { csrfFetch } from "./csrfFetch"
-import { url } from "."
+const URL = process.env.EXPO_PUBLIC_LOCAL_TUNNEL;
 
 /// ACTION
 
@@ -21,9 +21,9 @@ const reading = (result) => {
 
 export const ichingReading = () => async (dispatch) => {
     try {
-        const response = await csrfFetch(`${url}/api/hex`)
+        const response = await csrfFetch(`${URL}/api/hex`)
         if (response.ok) {
-            const result = await response.json();
+            const result = await response.json()
             dispatch(reading(result))
             return result
         }
@@ -41,8 +41,9 @@ export const hexReducer = (state = {}, action) => {
     switch (action.type) {
         case READING: {
             hexState.reading = action.result[0]
-            if (action.result.length > 2) {
+            if (action.result.length >= 2) {
                 hexState.alt = action.result[1]
+                return hexState
                 /// ALTERNATING LINE MEANINGS WILL GO HERE
             }
         }
@@ -50,5 +51,5 @@ export const hexReducer = (state = {}, action) => {
             return hexState;
         }
     }
-    return hexState
+
 }
