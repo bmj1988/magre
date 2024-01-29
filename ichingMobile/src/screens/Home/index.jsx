@@ -8,10 +8,10 @@ const Home = ({ navigation }) => {
         navigation.push("Away")
     }
     return (
-        <SafeAreaView style={ styles.theme }>
-            <Text style={styles.text}>Bellow world</Text>
+        <SafeAreaView style={styles.theme}>
+            <Text style={styles.bigText}>易经</Text>
             <TouchableOpacity onPress={() => navigateToPost()}>
-                <Text style={styles.text}>GO AWAY</Text>
+                <Text style={styles.text}>READING</Text>
             </TouchableOpacity>
         </SafeAreaView>
     )
