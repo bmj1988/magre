@@ -46,22 +46,22 @@ const trigramGenerator = () => {
 }
 
 const changingLinesProcessor = (val) => {
-        switch (val) {
-            case 0:
-                return 'first'
-            case 1:
-                return 'second'
-            case 2:
-                return 'third'
-            case 3:
-                return 'fourth'
-            case 4:
-                return 'fifth'
-            case 5:
-                return 'sixth'
-            default: return
-        }
+    switch (val) {
+        case 0:
+            return 'first'
+        case 1:
+            return 'second'
+        case 2:
+            return 'third'
+        case 3:
+            return 'fourth'
+        case 4:
+            return 'fifth'
+        case 5:
+            return 'sixth'
+        default: return
     }
+}
 
 const hexagramGenerator = () => {
     const tri1 = trigramGenerator();
@@ -103,9 +103,24 @@ const hexagramGenerator = () => {
     return [hexCode, alt, sendAlt, changingLines]
 }
 
+///REDIS BLOCK, PULL THIS AWAY LATER
+const redis = require('redis')
+const redisUrl = 'redis://127.0.0.1:6379'
+const client = redis.createClient(redisUrl)
+const util = require('util')
+client.get = util.promisify(client.get)
+///
+
 const findHex = async (req, res, next) => {
     const [hexCode, alt, sendAlt, changingLines] = hexagramGenerator();
     console.log(`RESULTS CHANGING LINES`, changingLines, 'SEND ALT', sendAlt, alt)
+    const key = [hexCode, changingLines, alt].join('')
+    const cachedReading = client.get(key)
+
+    if (cachedReading) {
+        return res.send(cachedReading)
+    }
+
     req.reading = await Hexagram.findOne({
         attributes: [...changingLines],
         where: {
