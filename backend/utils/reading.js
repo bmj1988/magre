@@ -104,23 +104,25 @@ const hexagramGenerator = () => {
 }
 
 ///REDIS BLOCK, PULL THIS AWAY LATER
-const redis = require('redis')
-const redisUrl = 'redis://127.0.0.1:6379'
-const client = redis.createClient(redisUrl)
-const util = require('util')
-client.get = util.promisify(client.get)
+// const redis = require('redis')
+// const redisUrl = 'redis://127.0.0.1:6379'
+// const client = redis.createClient(redisUrl)
+// const util = require('util')
+// client.get = util.promisify(client.get)
 ///
 
 const findHex = async (req, res, next) => {
     const [hexCode, alt, sendAlt, changingLines] = hexagramGenerator();
     console.log(`RESULTS CHANGING LINES`, changingLines, 'SEND ALT', sendAlt, alt)
-    const key = [hexCode, changingLines, alt].join('')
-    const cachedReading = client.get(key)
+    const key = [hexCode, changingLines].join('')
+    // const cachedReading = await client.get(key)
+    // const cachedAlt = await client.get(alt)
 
-    if (cachedReading) {
-        return res.send(cachedReading)
-    }
+    // if (cachedReading) {
+    //     req.reading = JSON.parse(cachedReading)
+    // }
 
+    // else {
     req.reading = await Hexagram.findOne({
         attributes: [...changingLines],
         where: {
@@ -139,7 +141,14 @@ const findHex = async (req, res, next) => {
             },
         ]
     })
+    // client.set(key, JSON.stringify(req.reading))
+    // }
 
+    // if (sendAlt && cachedAlt) {
+    //     req.alt = JSON.parse(cachedAlt)
+    // }
+
+    // else
     if (sendAlt) {
         req.alt = await Hexagram.findOne({
             where: { composition: alt },
@@ -156,8 +165,10 @@ const findHex = async (req, res, next) => {
                 },
             ]
         })
-
+        // client.set(alt, JSON.stringify(req.alt))
     }
+
+
     next();
 }
 // const hexMethod = () => {
