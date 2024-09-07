@@ -7,3 +7,21 @@
 3 - tarot implementation
 
 4 - shareaable on IG/Tiktok
+
+#To run this project:
+
+```
+    cd backend
+    npm -i
+    npm start
+```
+
+```
+    cd ichingMobile
+    npm -i
+    lt -p 8888 -s iching
+```
+```
+    cd ichingMobile
+    expo start --a
+```
