@@ -1,4 +1,4 @@
-base_url='http://localhost:8888/assets/hexagrams/'
+base_url='https://iching.loca.lt/hexagrams/'
 
 const hex_seeds = [{
     name: '(乾) QIAN',

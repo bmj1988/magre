@@ -16,7 +16,7 @@ export const ReadingScreen = ({ reading, alt, action, viewImage }) => {
     const aspect = reading.aspect;
     const situation = reading.guidance;
     const wisdom = reading.wisdom;
-    const bgUrl = `${TESTINGURL}${reading.art.slice(28)}`
+    const bgUrl = reading.art;
     const lineAscii = lineConverter(reading.lowerTrigram.composition, reading.upperTrigram.composition)
     const lineList = changingLines(reading)
     setBg(bgUrl)
