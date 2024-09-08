@@ -1,5 +1,9 @@
 const bcrypt = require('bcryptjs')
 'use strict';
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;
+}
 const { User } = require('../models')
 const userSeeds = [
   {
@@ -25,15 +29,6 @@ const userSeeds = [
   },
 ]
 
-const getEmails = (arr) => {
-  const newArr = []
-  for (let x of arr) {
-    newArr.push(x.email)
-  }
-  return newArr
-}
-
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -50,14 +45,10 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    const Op = Sequelize.Op;
+    options.tableName = 'Users'
     await queryInterface.bulkDelete(options, {
-      email: { [Op.in]: getEmails(userSeeds) }
+      email: { [Op.in]: userSeeds.map((user) => (user.email)) }
     }, {})
   }
 };
