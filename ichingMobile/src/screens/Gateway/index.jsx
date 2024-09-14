@@ -73,8 +73,8 @@ const Gateway = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.theme} onLayout={onLayoutRootView}>
-            <View>
-                <Text>
+            <View style={{height: '75%'}}>
+                <Text style={styles.text}>
                     {"Welcome to the Nexus"}
                 </Text>
             </View>

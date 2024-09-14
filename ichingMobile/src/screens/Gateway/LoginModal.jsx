@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { useDispatch } from "react-redux";
 import { thunkLogin } from "../../../store/session";
+import { LoginErrorsView } from "./LoginErrorsView";
 
 export default function LoginModal({ isVisible, onClose }) {
     const dispatch = useDispatch();
@@ -35,33 +36,31 @@ export default function LoginModal({ isVisible, onClose }) {
         <Modal animationType="none" transparent={true} visible={isVisible}>
             <View style={styles.loginContainer}>
                 <View style={styles.loginBox}>
-                    {Object.values(errors).length > 0 && Object.values(errors).map((error) => {
-                        return (
-                            <Text style={styles.error} key={styles.error}>
-                                {error}
-                            </Text>
-                        )
-                    })}
+                    <LoginErrorsView errors={errors} />
                     <View>
                         <TextInput
-                            style={styles.input}
+                            style={styles.inputs}
                             onChangeText={setCredential}
                             value={credential}
+                            placeholder="Enter your e-mail"
                             inputMode="email"
                             autoComplete="email" />
 
                         <TextInput
-                            style={styles.input}
+                            style={styles.inputs}
                             onChangeText={setPassword}
                             value={password}
+                            placeholder="Enter your password"
                             inputMode="password"
                             autoComplete="current-password" />
                     </View>
-                    <Pressable onPress={() => login()}>
-                        <Text>
-                            {"Login"}
-                        </Text>
-                    </Pressable>
+                    <View>
+                        <Pressable onPress={() => login()}>
+                            <Text style={styles.text}>
+                                {"Login"}
+                            </Text>
+                        </Pressable>
+                    </View>
                 </View>
             </View>
         </Modal>
@@ -73,14 +72,17 @@ const styles = new StyleSheet.create({
     loginContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
     },
     loginBox: {
-        height: '25%',
-        width: '25%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        height: 'fit-content',
+        width: '60%',
         margin: 'auto',
         backgroundColor: '#2b2825',
-        borderColor: 'gold',
+        borderColor: '#ddcba9',
         borderWidth: 1,
         borderStyle: "solid",
         borderRadius: 5
@@ -88,9 +90,14 @@ const styles = new StyleSheet.create({
     inputs: {
         borderRadius: 5,
         backgroundColor: '#ddcba9',
-        color: "#2b2825"
+        color: "#2b2825",
+        margin: 10,
     },
-    error: {
-        color: 'red'
+    text: {
+        color: '#ddcba9',
+        fontSize: 22,
+        fontFamily: 'NotoSerifTC-Bold',
+        fontWeight: '500',
+        textAlign: 'center'
     }
 })
