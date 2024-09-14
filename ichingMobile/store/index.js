@@ -1,6 +1,7 @@
 import { createStore, combineReducers, compose, applyMiddleware } from "redux";
-import thunk from "redux-thunk"
+import { thunk } from "redux-thunk"
 import { hexReducer } from "./hexagram";
+import { createLogger } from "redux-logger";
 import { sessionReducer } from "./session";
 
 /// LOCAL TUNNEL URL FOR TESTING
@@ -28,15 +29,15 @@ if (process.env.EXPO_PUBLIC_MODE === 'production') {
     enhancer = applyMiddleware(thunk)
 }
 else {
-    const logger = (await import('redux-logger')).default;
     const composeEnhancers =
         window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    enhancer = composeEnhancers(applyMiddleware(thunk, logger))
+    enhancer = composeEnhancers(applyMiddleware(thunk, createLogger()))
 }
 
 /// STORE
 
-
-export const configureStore = (preloadedState) => {
+const configureStore = (preloadedState) => {
     return createStore(rootReducer, preloadedState, enhancer)
 }
+
+export const store = configureStore();
