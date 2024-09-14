@@ -33,7 +33,6 @@ router.get('/', async (req, res) => {
     if (user) {
         const info = {
             id: user.id,
-            email: user.email,
             name: user.name,
         };
         return res.json({
