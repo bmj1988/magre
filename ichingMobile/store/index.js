@@ -1,6 +1,7 @@
 import { createStore, combineReducers, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk"
 import { hexReducer } from "./hexagram";
+import { sessionReducer } from "./session";
 
 /// LOCAL TUNNEL URL FOR TESTING
 
@@ -16,6 +17,7 @@ else {
 
 const rootReducer = combineReducers({
     hex: hexReducer,
+    session: sessionReducer
 })
 
 

@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from "./screens/Home"
 import Away from "./screens/Away"
+import Gateway from "./screens/Gateway";
 import ChangingLinesExplainer from "./screens/ChangingLinesExplainer";
 import BareImage from "./screens/BareImage";
 
@@ -15,7 +16,8 @@ export default RootNavigation = () => {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator screenOptions={screenOptions} initialRouteName="Home">
+            <Stack.Navigator screenOptions={screenOptions} initialRouteName="Gateway">
+                <Stack.Screen name='Gateway' component={Gateway} />
                 <Stack.Screen name='Home' component={Home} />
                 <Stack.Screen name='Away' component={Away} />
                 <Stack.Screen name='ChangingLinesExplainer' component={ChangingLinesExplainer} />
