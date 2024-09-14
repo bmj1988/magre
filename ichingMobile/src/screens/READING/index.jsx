@@ -7,9 +7,6 @@ import grabHanzi from "../../utils/grabHanzi.js";
 import TrigramAsciiGenerator from './AsciiGen.jsx'
 import { useReadingContext } from "../../context/readingContext.jsx";
 
-const TESTINGURL = process.env.EXPO_PUBLIC_LOCAL_TUNNEL;
-
-
 export const ReadingScreen = ({ reading, alt, action, viewImage }) => {
     const {bg, setBg} = useReadingContext()
     const name = grabHanzi(reading.name);
