@@ -15,7 +15,7 @@ router.post('/', validateLogin, async (req, res, next) => {
             email: credential
         }
     });
-
+    console.log(user)
     if (!user || !bcrypt.compareSync(password, user.hashedPw.toString())) {
         const err = new Error('Login failed');
         err.status = 401;

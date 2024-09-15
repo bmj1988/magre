@@ -19,7 +19,8 @@ const removeUser = () => {
 
 export const thunkLogin = (credentials) => async (dispatch) => {
     try {
-        const response = await csrfFetch(`${URL}/api/session`, {
+        console.log(credentials)
+        const response = await csrfFetch(`${URL}/api/session/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

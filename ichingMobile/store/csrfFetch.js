@@ -29,17 +29,21 @@ export async function csrfFetch(url, options = {}) {
         options.headers['XSRF-TOKEN'] = await AsyncStorage.getItem('XSRF-TOKEN');
     }
     // call the default window's fetch with the url and the options passed in
-    const res = await window.fetch(url, options);
+    let res = await window.fetch(url, options);
     let errorData = res.ok ? null : await res.json();
+    console.log(errorData)
+    // console.log(errorData.message, errorData.errors, errorData.xsrfToken)
 
-    if (errorData && errorData.status === 403 && errorData.message === "invalid csrf token") {
+    if (errorData && errorData.message === "invalid csrf token") {
+        console.log("This goes off!")
         let token = errorData.xsrfToken
         await AsyncStorage.setItem('XSRF-TOKEN', token)
-        return csrfFetch(url, options)
+        options.headers['XSRF-TOKEN'] = await AsyncStorage.getItem('XSRF-TOKEN');
+        res = await window.fetch(url, options)
     }
     // if the response status code is 400 or above, then throw an error with the
     // error being the response
-    else if (res.status >= 400) throw res;
+    if (res.status >= 400) throw res;
 
     // if the response status code is under 400, then return the response to the
     // next promise chain
