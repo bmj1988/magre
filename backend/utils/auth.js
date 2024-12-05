@@ -1,8 +1,35 @@
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
 const { User } = require('../db/models');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const bcrypt = require('bcryptjs')
+const crypto = require('crypto')
 
 const { secret, expiresIn } = jwtConfig;
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: 'http://localhost:8888/api/session/google/redirect',
+    scope: ['profile', 'email']
+},
+    async function (accessToken, refreshToken, profile, done) {
+        console.log(accessToken, refreshToken, profile)
+        const credential = profile.emails[0].values
+        console.log(credential, profile.emails[0])
+        const [user, created] = await User.findOrCreate({
+            where: { email: credential },
+            defaults: {
+                name: profile.name.givenName,
+                hashedPw: bcrypt.hashSync(crypto.randomBytes(4).toString('hex'))
+            }
+        })
+        if (created) return done(null, user)
+        return done(null, profile)
+
+    }))
+
 
 // Sends a JWT Cookie
 const setTokenCookie = (res, user) => {
@@ -82,4 +109,4 @@ const validateLogin = function (req, res, next) {
     else return next()
 }
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, validateLogin };
+module.exports = { setTokenCookie, restoreUser, requireAuth, validateLogin, passport };

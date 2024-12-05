@@ -39,6 +39,20 @@ export const thunkLogin = (credentials) => async (dispatch) => {
     }
 }
 
+export const thunkGoogleLogin = async () => {
+    try {
+        const response = await csrfFetch(`${URL}/api/session/auth/google`)
+        if (response.ok) {
+            console.log(response)
+            const debrief = await response.json()
+            console.log(debrief)
+        }
+    }
+    catch (e) {
+        console.error(e)
+    }
+}
+
 export const thunkLogout = () => async (dispatch) => {
     const response = await csrfFetch(`${URL}/api/session`, {
         method: 'DELETE'

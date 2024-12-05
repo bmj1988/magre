@@ -2,9 +2,10 @@ const router = require('express').Router()
 const express = require('express');
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
-const { setTokenCookie, validateLogin } = require('../../../utils/auth');
+const { setTokenCookie, validateLogin, passport } = require('../../../utils/auth');
 const { User } = require('../../../db/models');
 
+router.use(passport.initialize())
 
 /// SESSION ROUTER
 
@@ -15,7 +16,6 @@ router.post('/', validateLogin, async (req, res, next) => {
             email: credential
         }
     });
-    console.log(user)
     if (!user || !bcrypt.compareSync(password, user.hashedPw.toString())) {
         const err = new Error('Login failed');
         err.status = 401;
@@ -40,11 +40,19 @@ router.post('/', validateLogin, async (req, res, next) => {
 router.delete(
     '/',
     (_req, res) => {
-      res.clearCookie('token');
-      return res.json({ message: 'success' });
+        res.clearCookie('token');
+        return res.json({ message: 'success' });
     }
-  );
+);
 
+router.get('/auth/google', passport.authenticate('google'));
+
+router.get('/google/redirect', passport.authenticate('google', { session: false }), async (req, res) => {
+    const token = await setTokenCookie(res, req.user)
+    return res.json({
+        token
+    })
+})
 
 
 module.exports = router;
